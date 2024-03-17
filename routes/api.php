@@ -28,7 +28,7 @@ Route::group([
 
     // Version 1 - more verbose
     Route::apiResource('quizzes', 'App\Http\Controllers\Api\QuizController');
-    Route::prefix('/workspaces/{workspace}')->group(function () {
+    Route::prefix('/quizzes/{quiz}')->group(function () {
         Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
         Route::prefix('/question-groups/{questionGroup}')->group(function () {
             Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
