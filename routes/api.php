@@ -25,4 +25,25 @@ Route::group([
     Route::get('/user', function (Request $request) {
         return auth()->user();
     });
+
+    // Version 1 - more verbose
+    Route::apiResource('quizzes', 'App\Http\Controllers\Api\QuizController');
+    Route::prefix('/workspaces/{workspace}')->group(function () {
+        Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
+        Route::prefix('/question-groups/{questionGroup}')->group(function () {
+            Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
+            Route::prefix('/questions/{question}')->group(function () {
+                Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
+            });
+        });
+    });
+
+    // Version 2 - more concise
+    //    Route::apiResource('quizzes', 'App\Http\Controllers\Api\QuizController');
+    //    Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
+    //    Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
+    //    Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
 });
+
+
+
