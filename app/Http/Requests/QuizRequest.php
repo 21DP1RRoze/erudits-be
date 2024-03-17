@@ -23,7 +23,7 @@ class QuizRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'description' => '',
+            'description' => 'nullable',
         ];
     }
 }

@@ -23,6 +23,7 @@ class AnswerRequest extends FormRequest
     {
         return [
             'text' => 'required',
+            'question_id' => 'required|exists:questions,id',
         ];
     }
 }

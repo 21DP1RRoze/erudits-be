@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
@@ -12,14 +14,13 @@ class Question extends Model
     protected $fillable = [
         'text',
         'image',
-        'group_id',
-        'correct_answer_id',
+        'question_group_id',
     ];
 
     public function group(): BelongsTo {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(QuestionGroup::class);
     }
-    public function answer(): BelongsTo {
-        return $this->belongsTo(Answer::class);
+    public function answers(): HasMany {
+        return $this->hasMany(Answer::class);
     }
 }

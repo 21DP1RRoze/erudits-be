@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionRequest;
+use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return Question::all();
+        return QuestionResource::collection(Question::all());
+
     }
 
     /**
@@ -23,7 +25,7 @@ class QuestionController extends Controller
     public function store(QuestionRequest $request)
     {
         $validated = $request->validated();
-        return Question::create($validated);
+        return new QuestionResource(Question::create($validated));
     }
 
     /**
@@ -31,7 +33,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return $question;
+        return new QuestionResource($question);
     }
 
     /**
@@ -41,7 +43,7 @@ class QuestionController extends Controller
     {
         $validated = $request->validated();
         $question->update($validated);
-        return $question;
+        return new QuestionResource($question);
     }
 
     /**

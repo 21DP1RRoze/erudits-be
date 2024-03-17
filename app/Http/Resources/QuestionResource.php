@@ -19,7 +19,6 @@ class QuestionResource extends JsonResource
             'text' => $this->text,
             'image' => $this->image,
             'answers' => AnswerResource::collection($this->answers),
-            'correct_answer_id' => $this->correct_answer_id,
         ];
     }
 }

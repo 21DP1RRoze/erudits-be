@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuizRequest;
+use App\Http\Resources\QuizResource;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class QuizController extends Controller
     public function index()
     {
         // Add pagination if necessary
-        return Quiz::all();
+        return QuizResource::collection(Quiz::all());
     }
 
     /**
@@ -24,7 +25,8 @@ class QuizController extends Controller
     public function store(QuizRequest $request)
     {
         $validated = $request->validated();
-        return Quiz::create($validated);
+        $validated['user_id'] = auth()->id();
+        return new QuizResource(Quiz::create($validated));
     }
 
     /**
@@ -32,7 +34,7 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        return $quiz;
+        return new QuizResource($quiz);
     }
 
     /**
@@ -42,7 +44,7 @@ class QuizController extends Controller
     {
         $validated = $request->validated();
         $quiz->update($validated);
-        return $quiz;
+        return new QuizResource($quiz);
     }
 
     /**

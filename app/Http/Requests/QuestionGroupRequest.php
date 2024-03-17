@@ -24,9 +24,10 @@ class QuestionGroupRequest extends FormRequest
         return [
             'title' => 'required',
             'disqualify_amount' => 'required|integer',
-            'answer_time' => 'required|float',
+            'answer_time' => 'required',
             'points' => 'required|integer',
             'is_additional' => 'required|boolean',
+            'quiz_id' => 'required|exists:quizzes,id',
         ];
     }
 }

@@ -24,6 +24,7 @@ class QuestionRequest extends FormRequest
         return [
             'text' => 'required',
             'image' => 'nullable',
+            'question_group_id' => 'required|exists:question_groups,id',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnswerRequest;
+use App\Http\Resources\AnswerResource;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        return Answer::all();
+        return AnswerResource::collection(Answer::all());
     }
 
     /**
@@ -23,7 +24,7 @@ class AnswerController extends Controller
     public function store(AnswerRequest $request)
     {
         $validated = $request->validated();
-        return Answer::create($validated);
+        return new AnswerResource(Answer::create($validated));
     }
 
     /**
@@ -31,7 +32,7 @@ class AnswerController extends Controller
      */
     public function show(Answer $answer)
     {
-        return $answer;
+        return new AnswerResource($answer);
     }
 
     /**
@@ -41,7 +42,7 @@ class AnswerController extends Controller
     {
         $validated = $request->validated();
         $answer->update($validated);
-        return $answer;
+        return new AnswerResource($answer);
     }
 
     /**

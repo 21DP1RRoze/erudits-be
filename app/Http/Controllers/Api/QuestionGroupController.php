@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionGroupRequest;
+use App\Http\Resources\QuestionGroupResource;
 use App\Models\QuestionGroup;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class QuestionGroupController extends Controller
      */
     public function index()
     {
-        return QuestionGroup::all();
+        return QuestionGroupResource::collection(QuestionGroup::all());
     }
 
     /**
@@ -23,7 +24,7 @@ class QuestionGroupController extends Controller
     public function store(QuestionGroupRequest $request)
     {
         $validated = $request->validated();
-        return QuestionGroup::create($validated);
+        return new QuestionGroupResource(QuestionGroup::create($validated));
     }
 
     /**
@@ -31,7 +32,7 @@ class QuestionGroupController extends Controller
      */
     public function show(QuestionGroup $questionGroup)
     {
-        return $questionGroup;
+        return new QuestionGroupResource($questionGroup);
     }
 
     /**
@@ -41,7 +42,7 @@ class QuestionGroupController extends Controller
     {
         $validated = $request->validated();
         $questionGroup->update($validated);
-        return $questionGroup;
+        return new QuestionGroupResource($questionGroup);
     }
 
     /**
