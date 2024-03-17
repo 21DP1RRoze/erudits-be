@@ -17,7 +17,7 @@ class QuestionGroupResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'failures' => $this->failures,
+            'disqualify_amount' => $this->disqualify_amount,
             'answer_time' => $this->answer_time,
             'points' => $this->points,
             'is_additional' => $this->is_additional,

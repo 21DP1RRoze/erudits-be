@@ -23,7 +23,7 @@ class QuestionGroupRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'failures' => 'required|integer',
+            'disqualify_amount' => 'required|integer',
             'answer_time' => 'required|float',
             'points' => 'required|integer',
             'is_additional' => 'required|boolean',
