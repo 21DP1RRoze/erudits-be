@@ -30,7 +30,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return response->json([
+        return response()->json([
             'message' => 'Unauthenticated.',
         ], 401);
     }
