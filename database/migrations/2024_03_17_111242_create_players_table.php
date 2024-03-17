@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->integer("points");
-            $table->boolean("is_disqualified");
-            $table->integer("instance_id");
+            $table->integer("points")->default(0);
+            $table->boolean("is_disqualified")->default(false);
+            $table->foreignId("quiz_instance_id")->constrained("quiz_instances")->cascadeOnDelete();
             $table->timestamps();
         });
     }
