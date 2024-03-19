@@ -25,7 +25,7 @@ class PlayerController extends Controller
     public function store(PlayerRequest $request)
     {
         $validated = $request->validated();
-        return new PlayerRequest(Player::create($validated));
+        return new PlayerResource(Player::create($validated));
     }
 
     /**
@@ -33,7 +33,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        return new Player($player);
+        return new PlayerResource($player);
     }
 
     /**
@@ -44,13 +44,13 @@ class PlayerController extends Controller
         $validated = $request->validated();
 
         $player->update($validated);
-        return new player($player);
+        return new PlayerResource($player);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(player $player)
+    public function destroy(Player $player)
     {
         $player->delete();
         return response()->json();

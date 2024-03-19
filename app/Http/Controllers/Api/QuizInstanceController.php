@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\PlayerResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuizInstanceRequest;
@@ -24,7 +25,7 @@ class QuizInstanceController extends Controller
     public function store(QuizInstanceRequest $request)
     {
         $validated = $request->validated();
-        return new QuizInstanceRequest(QuizInstance::create($validated));
+        return new QuizInstanceResource(QuizInstance::create($validated));
     }
 
     /**
@@ -32,7 +33,7 @@ class QuizInstanceController extends Controller
      */
     public function show(QuizInstance $quizInstance)
     {
-        return new QuizInstance($quizInstance);
+        return new QuizInstanceResource($quizInstance);
     }
 
     /**
@@ -41,9 +42,9 @@ class QuizInstanceController extends Controller
     public function update(QuizInstanceRequest $request, QuizInstance $quizInstance)
     {
         $validated = $request->validated();
-        
+
         $quizInstance->update($validated);
-        return new quizInstance($quizInstance);
+        return new QuizInstanceResource($quizInstance);
     }
 
     /**
@@ -53,5 +54,31 @@ class QuizInstanceController extends Controller
     {
         $quizInstance->delete();
         return response()->json();
+    }
+
+
+    public function getPublicQuizzes()
+    {
+        $quizzes = QuizInstance::where('is_public', true)->get();
+        return QuizInstanceResource::collection($quizzes);
+    }
+
+    public function getActiveQuizzes()
+    {
+        $quizzes = QuizInstance::where('is_active', true)->get();
+        return QuizInstanceResource::collection($quizzes);
+    }
+
+    public function getActivePublicQuizzes()
+    {
+        $quizzes = QuizInstance::where('is_active', true)
+            ->where('is_public', true)
+            ->get();
+        return QuizInstanceResource::collection($quizzes);
+    }
+
+    public function getQuizInstancePlayers(QuizInstance $quizInstance)
+    {
+        return PlayerResource::collection($quizInstance->players()->get());
     }
 }
