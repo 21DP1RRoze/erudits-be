@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("description")->nullable();
             $table->boolean("is_public")->default(true);
             $table->boolean("is_active")->default(true);
-            $table->string("id_slug")->unique();
+            $table->string("id_slug")->nullable();
             $table->foreignId("quiz_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

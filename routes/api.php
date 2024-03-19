@@ -43,6 +43,8 @@ Route::group([
     Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
     Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
     Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
+    Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
+    Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
 });
 
 
