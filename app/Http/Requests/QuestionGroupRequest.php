@@ -21,12 +21,20 @@ class QuestionGroupRequest extends FormRequest
      */
     public function rules(): array
     {
+//        return [
+//            'title' => 'required',
+//            'disqualify_amount' => 'required|integer',
+//            'answer_time' => 'required',
+//            'points' => 'required|integer',
+//            'is_additional' => 'required|boolean',
+//            'quiz_id' => 'required|exists:quizzes,id',
+//        ];
         return [
-            'title' => 'required',
-            'disqualify_amount' => 'required|integer',
-            'answer_time' => 'required',
-            'points' => 'required|integer',
-            'is_additional' => 'required|boolean',
+            'title' => '',
+            'disqualify_amount' => 'integer',
+            'answer_time' => '',
+            'points' => 'integer',
+            'is_additional' => 'boolean',
             'quiz_id' => 'required|exists:quizzes,id',
         ];
     }
