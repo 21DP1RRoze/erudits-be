@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\QuizInstanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,13 @@ Route::group([
 
     // Version 2 - more concise
     Route::apiResource('quizzes', 'App\Http\Controllers\Api\QuizController');
+    Route::prefix('/quiz-instances')->group(function () {
+        Route::get('/public', [QuizInstanceController::class, 'getPublicQuizzes']);
+        Route::get('/active', [QuizInstanceController::class, 'getActiveQuizzes']);
+        Route::get('/active-public', [QuizInstanceController::class, 'getActivePublicQuizzes']);
+
+        Route::get('{quiz_instance}/players', [QuizInstanceController::class, 'getQuizInstancePlayers']);
+    });
     Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
     Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
     Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');

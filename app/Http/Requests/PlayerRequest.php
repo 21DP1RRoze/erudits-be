@@ -25,6 +25,7 @@ class PlayerRequest extends FormRequest
             'name' => 'required|max:24',
             'points' => 'required|min:0',
             'is_disqualified' => 'boolean|required',
+            'quiz_instance_id' => 'required',
         ];
     }
 }
