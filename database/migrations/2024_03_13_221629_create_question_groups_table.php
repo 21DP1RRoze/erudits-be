@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('question_groups', function (Blueprint $table) {
             $table->id();
-            $table->string("title");
-            $table->integer("disqualify_amount");
-            $table->float("answer_time");
-            $table->integer("points");
-            $table->boolean("is_additional")->default(false);
+            $table->string("title")->nullable();
+            $table->integer("disqualify_amount")->nullable();
+            $table->float("answer_time")->nullable();
+            $table->integer("points")->nullable();
+            $table->boolean("is_additional")->default(false)->nullable();
             $table->foreignId("quiz_id")->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -21,8 +21,12 @@ class AnswerRequest extends FormRequest
      */
     public function rules(): array
     {
+//        return [
+//            'text' => 'required',
+//            'question_id' => 'required|exists:questions,id',
+//        ];
         return [
-            'text' => 'required',
+            'text' => '',
             'question_id' => 'required|exists:questions,id',
         ];
     }

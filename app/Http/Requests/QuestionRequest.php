@@ -21,8 +21,14 @@ class QuestionRequest extends FormRequest
      */
     public function rules(): array
     {
+//        return [
+//            'text' => 'required',
+//            'image' => 'nullable',
+//            'question_group_id' => 'required|exists:question_groups,id',
+//        ];
+
         return [
-            'text' => 'required',
+            'text' => '',
             'image' => 'nullable',
             'question_group_id' => 'required|exists:question_groups,id',
         ];
