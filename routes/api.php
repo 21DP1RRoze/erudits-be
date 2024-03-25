@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PlayerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -53,6 +54,7 @@ Route::group([
     Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
     Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
     Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
+    Route::post('open-answers', [PlayerController::class, 'storeOpenAnswer']);
 });
 
 
