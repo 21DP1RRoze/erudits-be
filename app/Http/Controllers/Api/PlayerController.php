@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\OpenAnswer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayerRequest;
@@ -54,5 +55,15 @@ class PlayerController extends Controller
     {
         $player->delete();
         return response()->json();
+    }
+
+    public function storeOpenAnswer(Request $request)
+    {
+        $validated = $request->validate([
+            "answer" => "nullable",
+            "player_id" => "required",
+            "question_id" => "required",
+        ]);
+        return OpenAnswer::create($validated);
     }
 }

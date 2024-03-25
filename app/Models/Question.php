@@ -14,6 +14,7 @@ class Question extends Model
     protected $fillable = [
         'text',
         'image',
+        'is_open_answer',
         'question_group_id',
     ];
 
@@ -22,5 +23,8 @@ class Question extends Model
     }
     public function answers(): HasMany {
         return $this->hasMany(Answer::class);
+    }
+    public function open_answers(): HasMany {
+        return $this->hasMany(OpenAnswer::class);
     }
 }
