@@ -21,8 +21,12 @@ class QuizRequest extends FormRequest
      */
     public function rules(): array
     {
+//        return [
+//            'title' => 'required',
+//            'description' => 'nullable',
+//        ];
         return [
-            'title' => 'required',
+            'title' => 'null',
             'description' => 'nullable',
         ];
     }

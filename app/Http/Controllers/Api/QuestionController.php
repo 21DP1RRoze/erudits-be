@@ -25,7 +25,20 @@ class QuestionController extends Controller
     public function store(QuestionRequest $request)
     {
         $validated = $request->validated();
-        return new QuestionResource(Question::create($validated));
+        // I have no idea why, but the backend always returns is_open_answer as null
+        // Even though the database clearly makes the default value as false, it still doesn't work
+        // That's why I'm specifying it here
+        $validated['is_open_answer'] = false;
+        $question = Question::create($validated);
+
+        for ($i = 1; $i <= 4; $i++) {
+            $question->answers()->create([
+                'text' => 'Answer ' . $i,
+                'is_correct' => $i % 4 == 0, // Sets the last answer as the correct one by default
+            ]);
+        }
+
+        return new QuestionResource($question);
     }
 
     /**

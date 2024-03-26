@@ -56,4 +56,49 @@ class QuizController extends Controller
         $quiz->delete();
         return response()->json();
     }
+
+    public function saveQuiz(Request $request, Quiz $quiz)
+    {
+        $jsonData = $request->json()->all(); // Retrieve JSON data from the request
+
+        // Update the quiz details
+        $quiz->title = $jsonData['title'];
+        $quiz->description = $jsonData['description'];
+        $quiz->save();
+
+        // Update or create question groups
+        foreach ($jsonData['question_groups'] as $groupData) {
+            $group = $quiz->questionGroups()->updateOrCreate(
+                ['id' => $groupData['id']], // Update if exists, otherwise create
+                [
+                    'title' => $groupData['title'],
+                    // Add other group fields here
+                ]
+            );
+
+            // Update or create questions for each group
+            foreach ($groupData['questions'] as $questionData) {
+                $question = $group->questions()->updateOrCreate(
+                    ['id' => $questionData['id']], // Update if exists, otherwise create
+                    [
+                        'text' => $questionData['text'],
+                        'is_open_answer' => $questionData['is_open_answer'],
+                        // Add other question fields here
+                    ]
+                );
+
+                // Update or create answers for each question
+                foreach ($questionData['answers'] as $answerData) {
+                    $question->answers()->updateOrCreate(
+                        ['id' => $answerData['id']], // Update if exists, otherwise create
+                        [
+                            'text' => $answerData['text'],
+                            'is_correct' => $answerData['is_correct'],
+                            // Add other answer fields here
+                        ]
+                    );
+                }
+            }
+        }
+    }
 }
