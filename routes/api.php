@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\PlayerController;
+use App\Http\Controllers\Api\QuizController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -52,10 +53,11 @@ Route::group([
     Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
     Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
     Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
-    Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
     Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
     Route::post('open-answers', [PlayerController::class, 'storeOpenAnswer']);
+    Route::post('quizzes/{quiz}/save', [QuizController::class, 'saveQuiz']);
 });
+Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
 
 
 
