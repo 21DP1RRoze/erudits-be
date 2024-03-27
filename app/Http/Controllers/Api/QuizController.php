@@ -72,6 +72,9 @@ class QuizController extends Controller
                 ['id' => $groupData['id']], // Update if exists, otherwise create
                 [
                     'title' => $groupData['title'],
+                    'disqualify_amount' => $groupData['disqualify_amount'],
+                    'points' => $groupData['points'],
+                    'answer_time' => $groupData['answer_time'],
                     // Add other group fields here
                 ]
             );
