@@ -16,10 +16,8 @@ class QuizInstanceResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'title'=>$this->title,
-            'description'=>$this->description,
             'is_public'=>$this->is_public,
-            'is_active'=>$this->is_active,
+            'quiz' => new QuizResource($this->quiz),
         ];
     }
 }

@@ -22,10 +22,7 @@ class QuizInstanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:64',
-            'description' => 'nullable|max:512',
-            'is_public' => 'boolean|required',
-            'is_active' => 'boolean|required',
+            'is_public' => 'boolean',
             'quiz_id' => 'required',
         ];
     }
