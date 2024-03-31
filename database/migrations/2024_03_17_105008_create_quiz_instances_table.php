@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('quiz_instances', function (Blueprint $table) {
             $table->id();
             $table->boolean("is_public")->default(true);
+            $table->boolean("is_active")->default(true);
             $table->string("id_slug")->nullable();
             $table->foreignId("quiz_id")->constrained()->cascadeOnDelete();
+            $table->foreignId("active_question_group_id")->nullable()->constrained("questions")->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
+        $this->calculatePoints();
         return PlayerResource::collection(Player::all());
     }
 
@@ -65,5 +66,20 @@ class PlayerController extends Controller
             "question_id" => "required",
         ]);
         return OpenAnswer::create($validated);
+    }
+
+    public function calculatePoints()
+    {
+        // Calculate points for each player, add score to player if answer is correct
+        $players = Player::all();
+        foreach ($players as $player) {
+            $player->points = 0;
+            foreach ($player->player_answers as $playerAnswer) {
+                if ($playerAnswer->answer->is_correct) {
+                    $player->points += $playerAnswer->question->question_group->points;
+                }
+            }
+            $player->save();
+        }
     }
 }

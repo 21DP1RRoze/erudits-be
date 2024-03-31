@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AnswerController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\QuizController;
 use Illuminate\Http\Request;
@@ -59,5 +60,10 @@ Route::group([
 });
 Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
 
+Route::get('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'getActiveQuestionGroup']);
+Route::post('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'setActiveQuestionGroup']);
+
+Route::post('answers/set-selected-answer', [AnswerController::class, 'setSelectedAnswer']);
+Route::post('answers/set-open-answer', [AnswerController::class, 'setOpenAnswer']);
 
 

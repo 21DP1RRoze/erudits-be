@@ -17,7 +17,8 @@ class QuizInstance extends Model
         'is_public',
         'is_active',
         'id_slug',
-        'quiz_id'
+        'quiz_id',
+        'active_question_group_id',
     ];
 
     public function quiz(): BelongsTo {
@@ -27,5 +28,10 @@ class QuizInstance extends Model
     public function players(): HasMany
     {
         return $this->hasMany(Player::class);
+    }
+
+    public function activeQuestionGroup(): BelongsTo
+    {
+        return $this->belongsTo(QuestionGroup::class, 'active_question_group_id');
     }
 }

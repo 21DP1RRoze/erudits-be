@@ -19,4 +19,8 @@ class Answer extends Model
     public function question(): BelongsTo {
         return $this->belongsTo(Question::class);
     }
+
+    public function player_answers() {
+        return $this->hasMany(PlayerAnswer::class);
+    }
 }
