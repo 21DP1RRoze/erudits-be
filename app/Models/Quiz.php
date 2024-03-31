@@ -18,10 +18,14 @@ class Quiz extends Model
     ];
 
     public function owner(): BelongsTo {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(User::class);
     }
 
     public function questionGroups(): HasMany {
         return $this->hasMany(QuestionGroup::class);
+    }
+
+    public function quizInstances(): HasMany {
+        return $this->hasMany(QuizInstance::class);
     }
 }

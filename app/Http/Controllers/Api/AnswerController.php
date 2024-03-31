@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AnswerRequest;
 use App\Http\Resources\AnswerResource;
 use App\Models\Answer;
+use App\Models\OpenAnswer;
+use App\Models\PlayerAnswer;
 use Illuminate\Http\Request;
 
 class AnswerController extends Controller
@@ -51,6 +53,44 @@ class AnswerController extends Controller
     public function destroy(Answer $answer)
     {
         $answer->delete();
+        return response()->json();
+    }
+
+    public function setSelectedAnswer(Request $request)
+    {
+        $validated = $request->validate([
+            'player_id' => 'required|integer',
+            'question_id' => 'required|integer',
+            'answer_id' => 'required|integer',
+        ]);
+
+        $playerAnswer = PlayerAnswer::where('player_id', $validated['player_id'])
+            ->where('question_id', $validated['question_id'])
+            ->first();
+        if ($playerAnswer) {
+            $playerAnswer->update(['answer_id' => $validated['answer_id']]);
+        } else {
+            PlayerAnswer::create($validated);
+        }
+        return response()->json();
+    }
+
+    public function setOpenAnswer(Request $request)
+    {
+        $validated = $request->validate([
+            'player_id' => 'required|integer',
+            'question_id' => 'required|integer',
+            'answer' => 'required|string',
+        ]);
+
+        $openAnswer = OpenAnswer::where('player_id', $validated['player_id'])
+            ->where('question_id', $validated['question_id'])
+            ->first();
+        if ($openAnswer) {
+            $openAnswer->update(['answer' => $validated['answer']]);
+        } else {
+            OpenAnswer::create($validated);
+        }
         return response()->json();
     }
 }

@@ -18,13 +18,19 @@ class Question extends Model
         'question_group_id',
     ];
 
-    public function group(): BelongsTo {
+    public function question_group(): BelongsTo {
         return $this->belongsTo(QuestionGroup::class);
     }
+
     public function answers(): HasMany {
         return $this->hasMany(Answer::class);
     }
+
     public function open_answers(): HasMany {
         return $this->hasMany(OpenAnswer::class);
+    }
+
+    public function player_answers(): HasMany {
+        return $this->hasMany(PlayerAnswer::class);
     }
 }

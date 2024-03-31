@@ -22,7 +22,11 @@ class Player extends Model
         return $this->belongsTo(QuizInstance::class);
     }
 
-    public function open_answer(): HasMany {
+    public function open_answers(): HasMany {
         return $this->hasMany(OpenAnswer::class);
+    }
+
+    public function player_answers(): HasMany {
+        return $this->hasMany(PlayerAnswer::class);
     }
 }

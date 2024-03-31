@@ -81,4 +81,26 @@ class QuizInstanceController extends Controller
     {
         return PlayerResource::collection($quizInstance->players()->get());
     }
+
+    // Method that will be used by pollers to check if a new question group is active
+    public function getActiveQuestionGroup(QuizInstance $quizInstance)
+    {
+        return $quizInstance->activeQuestionGroup()->get();
+    }
+
+    public function setActiveQuestionGroup(Request $request, QuizInstance $quizInstance)
+    {
+        $validated = $request->validate([
+            'question_group_id' => 'required|integer',
+        ]);
+
+        $quizInstance->update(['active_question_group_id' => $validated['question_group_id']]);
+        return response()->json();
+    }
+
+    public function setQuizInstanceActive(QuizInstance $quizInstance)
+    {
+        $quizInstance->update(['is_active' => true]);
+        return response()->json();
+    }
 }

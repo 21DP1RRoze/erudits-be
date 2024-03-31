@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Answer;
+use App\Models\Player;
 use App\Models\Question;
 use App\Models\QuestionGroup;
 use App\Models\Quiz;
@@ -51,6 +52,44 @@ class DatabaseSeeder extends Seeder
             $question->answers()->saveMany(
                 Answer::factory(4)->make()
             );
+        });
+
+        // Create a quiz instance from the first quiz
+        $quiz = Quiz::first();
+        $quizInstance = $quiz->quizInstances()->create([
+            'is_public' => true,
+            'is_active' => true,
+        ]);
+
+        // Create 14 players for the quiz instance
+        $quizInstance->players()->saveMany(
+            Player::factory(14)->make()
+        );
+
+        // Set the first question group as the active question group
+        $quizInstance->activeQuestionGroup()->associate($quizInstance->quiz->questionGroups->first());
+        $quizInstance->save();
+
+        // For each player, create a player answer for each question in the active question group
+//        $quizInstance->players->each(function ($player) use ($quizInstance) {
+//            $quizInstance->activeQuestionGroup->questions->each(function ($question) use ($player) {
+//                $player->player_answers()->create([
+//                    'question_id' => $question->id,
+//                    'answer_id' => $question->answers->random()->id,
+//                ]);
+//            });
+//        });
+
+        // For each player, create a player answer for each question
+        $quizInstance->players->each(function ($player) use ($quizInstance) {
+            $quizInstance->quiz->questionGroups->each(function ($questionGroup) use ($player) {
+                $questionGroup->questions->each(function ($question) use ($player) {
+                    $player->player_answers()->create([
+                        'question_id' => $question->id,
+                        'answer_id' => $question->answers->random()->id,
+                    ]);
+                });
+            });
         });
     }
 }

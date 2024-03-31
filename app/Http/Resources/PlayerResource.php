@@ -15,9 +15,11 @@ class PlayerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name'=>$this->name,
-            'points'=>$this->points,
-            'is_disqualified'=>$this->is_disqualified,
+            'name' => $this->name,
+            'points' => $this->points,
+            'is_disqualified' => $this->is_disqualified,
+            'player_answers' => PlayerAnswerResource::collection($this->player_answers),
+            'open_answers' => OpenAnswerResource::collection($this->open_answers),
         ];
     }
 }
