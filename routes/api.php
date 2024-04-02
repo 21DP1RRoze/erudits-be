@@ -54,11 +54,11 @@ Route::group([
     Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
     Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
     Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
-    Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
     Route::post('open-answers', [PlayerController::class, 'storeOpenAnswer']);
     Route::post('quizzes/{quiz}/save', [QuizController::class, 'saveQuiz']);
 });
 Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
+Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
 
 Route::get('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'getActiveQuestionGroup']);
 Route::post('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'setActiveQuestionGroup']);
