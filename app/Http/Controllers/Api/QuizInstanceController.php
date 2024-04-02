@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\PlayerResource;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuizInstanceRequest;
@@ -102,5 +103,59 @@ class QuizInstanceController extends Controller
     {
         $quizInstance->update(['is_active' => true]);
         return response()->json();
+    }
+
+    public function setAllPlayersActive(QuizInstance $quizInstance)
+    {
+        foreach ($quizInstance->players() as $player) {
+            $player->is_active = true;
+            $player->save();
+        }
+        return response()->json();
+    }
+
+    public function setAllPlayersInactive(QuizInstance $quizInstance)
+    {
+        foreach ($quizInstance->players() as $player) {
+            $player->is_active = false;
+            $player->save();
+        }
+        return response()->json();
+    }
+
+    public function handleQuestionGroupPoll(QuizInstance $quizInstance)
+    {
+        if ($this->hasQuestionGroupEnded($quizInstance)) {
+            $this->setAllPlayersInactive($quizInstance);
+            $quizInstance->active_question_group_id = null;
+            $quizInstance->active_question_group_start = null;
+
+            $quizInstance->save();
+        }
+    }
+
+    public function hasQuestionGroupEnded(QuizInstance $quizInstance)
+    {
+        if ($quizInstance->active_question_group_id != null) {
+            // Check if the time has run out
+            $endTime = $quizInstance->active_question_group_start->addMinutes($quizInstance->activeQuestionGroup->answer_time);
+            if (now()->greaterThan($endTime)) {
+                return true;
+            }
+
+            // Check if all active players have finished the question group
+            $players = $quizInstance->players()->where('is_disqualified', false);
+            if ($players->count() == 0) {
+                return true;
+            }
+
+            foreach ($players as $player) {
+                if ($player->is_active) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
