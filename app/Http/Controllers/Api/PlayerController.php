@@ -82,4 +82,10 @@ class PlayerController extends Controller
             $player->save();
         }
     }
+
+    public function setPlayerInactive(Player $player)
+    {
+        $player->update(['is_active' => false]);
+        return response()->json();
+    }
 }
