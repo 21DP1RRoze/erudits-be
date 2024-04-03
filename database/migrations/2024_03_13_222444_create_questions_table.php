@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("text")->nullable();
             $table->string("image")->nullable();
             $table->boolean("is_open_answer")->default(false);
+            $table->text('guidelines')->nullable();
             $table->foreignId("question_group_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

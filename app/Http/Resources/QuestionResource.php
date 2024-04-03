@@ -19,6 +19,7 @@ class QuestionResource extends JsonResource
             'text' => $this->text,
             'image' => $this->image,
             'is_open_answer' => $this->is_open_answer,
+            'guidelines' => $this->guidelines,
             'answers' => AnswerResource::collection($this->answers),
         ];
     }

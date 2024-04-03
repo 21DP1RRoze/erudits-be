@@ -15,6 +15,7 @@ class Question extends Model
         'text',
         'image',
         'is_open_answer',
+        'guidelines',
         'question_group_id',
     ];
 
