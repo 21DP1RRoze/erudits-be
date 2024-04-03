@@ -17,8 +17,6 @@ class PlayerAnswerResource extends JsonResource
         return [
             'id' => $this->id,
             'answer' => new AnswerResource($this->answer),
-
-            // Will probably change
             'question_id' => $this->question->id,
             'question_group_id' => $this->question->question_group_id,
         ];

@@ -17,10 +17,9 @@ class OpenAnswerResource extends JsonResource
         return [
             'id' => $this->id,
             'answer' => $this->answer,
-
-            // Will probably change
             'question_id' => $this->question->id,
-            'question_group_id' => $this->question->group->id,
+            'question_group_id' => $this->question->question_group_id,
+
         ];
     }
 }
