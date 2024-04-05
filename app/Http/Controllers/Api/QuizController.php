@@ -57,6 +57,15 @@ class QuizController extends Controller
         return response()->json();
     }
 
+    public function saveTitleDescription(Request $request, Quiz $quiz) {        
+        $validated = $request->validate([
+            'title' => 'required',
+            'description' => 'max:512|nullable',
+        ]);
+        
+        $quiz->update($validated);
+    }
+
     public function saveQuiz(Request $request, Quiz $quiz)
     {
         $jsonData = $request->json()->all(); // Retrieve JSON data from the request

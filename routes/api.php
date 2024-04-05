@@ -56,6 +56,7 @@ Route::group([
     Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
     Route::post('open-answers', [PlayerController::class, 'storeOpenAnswer']);
     Route::post('quizzes/{quiz}/save', [QuizController::class, 'saveQuiz']);
+    Route::post('quizzes/{quiz}/savetitledescription', [QuizController::class, 'saveTitleDescription']);
 
     Route::post('quiz-instances/set-players-active', [QuizInstanceController::class, 'setAllPlayersActive']);
     Route::post('players/{player}/deactivate', [PlayerController::class, 'setPlayerInactive']);

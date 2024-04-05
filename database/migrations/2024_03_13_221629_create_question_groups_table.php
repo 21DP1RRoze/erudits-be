@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('question_groups', function (Blueprint $table) {
             $table->id();
             $table->string("title")->nullable();
-            $table->integer("disqualify_amount")->nullable();
-            $table->float("answer_time")->nullable();
-            $table->integer("points")->nullable();
+            $table->integer("disqualify_amount")->default(0)->nullable();
+            $table->float("answer_time")->default(1)->nullable();
+            $table->integer("points")->default(1)->nullable();
             $table->boolean("is_additional")->default(false)->nullable();
             $table->foreignId("quiz_id")->constrained()->onDelete('cascade');
             $table->timestamps();
