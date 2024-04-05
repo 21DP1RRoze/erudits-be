@@ -92,10 +92,14 @@ class QuizInstanceController extends Controller
     public function setActiveQuestionGroup(Request $request, QuizInstance $quizInstance)
     {
         $validated = $request->validate([
-            'question_group_id' => 'required|integer',
+            'question_group_id' => 'nullable|integer',
         ]);
 
-        $quizInstance->update(['active_question_group_id' => $validated['question_group_id']]);
+        if(isset($validated['question_group_id'])) {
+            $quizInstance->update(['active_question_group_id' => $validated['question_group_id']]);
+        } else {
+            $quizInstance->update(['active_question_group_id' => null]);
+        }
         return response()->json();
     }
 
