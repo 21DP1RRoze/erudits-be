@@ -59,7 +59,6 @@ Route::group([
     Route::post('quizzes/{quiz}/savetitledescription', [QuizController::class, 'saveTitleDescription']);
 
     Route::post('quiz-instances/set-players-active', [QuizInstanceController::class, 'setAllPlayersActive']);
-    Route::post('players/{player}/deactivate', [PlayerController::class, 'setPlayerInactive']);
 });
 Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
 Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
@@ -70,4 +69,7 @@ Route::post('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstan
 Route::post('answers/set-selected-answer', [AnswerController::class, 'setSelectedAnswer']);
 Route::post('answers/set-open-answer', [AnswerController::class, 'setOpenAnswer']);
 
+Route::post('/players/{player}/deactivate', [PlayerController::class, 'setPlayerInactive']);
+
 Route::post('quiz-instances/{quiz_instance}/poll', [QuizInstanceController::class, 'handleQuestionGroupPoll']);
+Route::get('quiz-instances/{quiz_instance}/poll-group', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);

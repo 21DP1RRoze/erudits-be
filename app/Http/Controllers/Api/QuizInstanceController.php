@@ -138,6 +138,20 @@ class QuizInstanceController extends Controller
         }
     }
 
+    public function hasActiveQuestionGroupPoll(QuizInstance $quizInstance)
+    {
+
+        if($quizInstance->active_question_group_id == null) {
+            return response()->json([
+                'status' => false,
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => new QuizInstanceResource($quizInstance),
+        ]);
+    }
+
     public function hasQuestionGroupEnded(QuizInstance $quizInstance)
     {
         if ($quizInstance->active_question_group_id != null) {
