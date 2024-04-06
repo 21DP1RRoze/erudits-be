@@ -64,15 +64,18 @@ class AnswerController extends Controller
             'answer_id' => 'required|integer',
         ]);
 
+        $updatedPlayerAnswer = null;
         $playerAnswer = PlayerAnswer::where('player_id', $validated['player_id'])
             ->where('question_id', $validated['question_id'])
             ->first();
         if ($playerAnswer) {
-            $playerAnswer->update(['answer_id' => $validated['answer_id']]);
+            $updatedPlayerAnswer = $playerAnswer->update(['answer_id' => $validated['answer_id']]);
         } else {
-            PlayerAnswer::create($validated);
+            $updatedPlayerAnswer = PlayerAnswer::create($validated);
         }
-        return response()->json();
+        return response()->json([
+            'player_answer' => $updatedPlayerAnswer,
+        ]);
     }
 
     public function setOpenAnswer(Request $request)
