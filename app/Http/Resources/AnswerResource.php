@@ -14,6 +14,14 @@ class AnswerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // If user is not logged in, don't show the correct answer
+        if (!auth()->check()) {
+            return [
+                'id' => $this->id,
+                'text' => $this->text,
+            ];
+        }
+        // If user is logged in, show the correct answer
         return [
             'id' => $this->id,
             'text' => $this->text,

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("id_slug")->nullable();
             $table->foreignId("quiz_id")->constrained()->cascadeOnDelete();
             $table->foreignId("active_question_group_id")->nullable()->constrained("questions")->cascadeOnDelete();
-            $table->time("active_question_group_start")->nullable();
+            $table->timestamp("active_question_group_start")->nullable();
             $table->timestamps();
         });
     }

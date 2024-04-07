@@ -88,4 +88,29 @@ class PlayerController extends Controller
         $player->update(['is_active' => false]);
         return response()->json();
     }
+
+    public function disqualifyPlayer(Player $player)
+    {
+        $player->update(['is_disqualified' => true]);
+    }
+
+    public function requalifyPlayer(Player $player)
+    {
+        $player->update(['is_disqualified' => false]);
+    }
+
+    public function disqualifySelectedPlayers(Request $request)
+    {
+        $validated = $request->validate([
+            'player_ids' => 'required|array',
+        ]);
+
+        foreach ($validated['player_ids'] as $player_id) {
+            $player = Player::find($player_id);
+            $player->is_disqualified = true;
+            $player->save();
+        }
+
+        return response()->json();
+    }
 }

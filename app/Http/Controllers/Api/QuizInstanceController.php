@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\PlayerResource;
+use App\Models\Player;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -80,7 +81,24 @@ class QuizInstanceController extends Controller
 
     public function getQuizInstancePlayers(QuizInstance $quizInstance)
     {
+        $this->calculatePoints($quizInstance);
+
         return PlayerResource::collection($quizInstance->players()->get());
+    }
+
+    public function calculatePoints($quizInstance)
+    {
+        // Calculate points for each player in current quiz instance
+        $players = $quizInstance->players()->get();
+        foreach ($players as $player) {
+            $player->points = 0;
+            foreach ($player->player_answers as $playerAnswer) {
+                if ($playerAnswer->answer->is_correct) {
+                    $player->points += $playerAnswer->question->question_group->points;
+                }
+            }
+            $player->save();
+        }
     }
 
     // Method that will be used by pollers to check if a new question group is active
@@ -93,14 +111,23 @@ class QuizInstanceController extends Controller
     {
         $validated = $request->validate([
             'question_group_id' => 'nullable|integer',
+            'question_group_time' => 'nullable',
         ]);
-
         if(isset($validated['question_group_id'])) {
-            $quizInstance->update(['active_question_group_id' => $validated['question_group_id']]);
+            $quizInstance->update([
+                'active_question_group_id' => $validated['question_group_id'],
+                'active_question_group_start' => $validated['question_group_time'],
+            ]);
+
         } else {
-            $quizInstance->update(['active_question_group_id' => null]);
+            $quizInstance->update([
+                'active_question_group_id' => null,
+                'active_question_group_start' => null,
+            ]);
         }
-        return response()->json();
+        return response()->json([
+            'data' => new QuizInstanceResource($quizInstance),
+        ]);
     }
 
     public function setQuizInstanceActive(QuizInstance $quizInstance)
@@ -144,7 +171,7 @@ class QuizInstanceController extends Controller
         if($quizInstance->active_question_group_id == null) {
             return response()->json([
                 'status' => false,
-            ], 404);
+            ]);
         }
 
         return response()->json([

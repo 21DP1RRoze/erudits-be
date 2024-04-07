@@ -19,6 +19,11 @@ class QuizInstance extends Model
         'id_slug',
         'quiz_id',
         'active_question_group_id',
+        'active_question_group_start',
+    ];
+
+    protected $casts = [
+        'active_question_group_start' => 'datetime',
     ];
 
     public function quiz(): BelongsTo {
