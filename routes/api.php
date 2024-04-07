@@ -49,27 +49,30 @@ Route::group([
         Route::get('/active', [QuizInstanceController::class, 'getActiveQuizzes']);
         Route::get('/active-public', [QuizInstanceController::class, 'getActivePublicQuizzes']);
 
-        Route::get('{quiz_instance}/players', [QuizInstanceController::class, 'getQuizInstancePlayers']);
+        Route::get('/{quiz_instance}/players', [QuizInstanceController::class, 'getQuizInstancePlayers']);
     });
-    Route::apiResource('question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
-    Route::apiResource('questions', 'App\Http\Controllers\Api\QuestionController');
-    Route::apiResource('answers', 'App\Http\Controllers\Api\AnswerController');
-    Route::post('open-answers', [PlayerController::class, 'storeOpenAnswer']);
-    Route::post('quizzes/{quiz}/save', [QuizController::class, 'saveQuiz']);
-    Route::post('quizzes/{quiz}/savetitledescription', [QuizController::class, 'saveTitleDescription']);
+    Route::apiResource('/question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
+    Route::apiResource('/questions', 'App\Http\Controllers\Api\QuestionController');
+    Route::apiResource('/answers', 'App\Http\Controllers\Api\AnswerController');
+    Route::post('/open-answers', [PlayerController::class, 'storeOpenAnswer']);
+    Route::post('/quizzes/{quiz}/save', [QuizController::class, 'saveQuiz']);
+    Route::post('/quizzes/{quiz}/savetitledescription', [QuizController::class, 'saveTitleDescription']);
 
-    Route::post('quiz-instances/set-players-active', [QuizInstanceController::class, 'setAllPlayersActive']);
+    Route::post('/quiz-instances/set-players-active', [QuizInstanceController::class, 'setAllPlayersActive']);
+    Route::post('/players/{player}/disqualify', [PlayerController::class, 'disqualifyPlayer']);
+    Route::post('/players/{player}/requalify', [PlayerController::class, 'requalifyPlayer']);
+    Route::post('/players/disqualify-selected', [PlayerController::class, 'disqualifySelectedPlayers']);
 });
-Route::apiResource('quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
-Route::apiResource('players', 'App\Http\Controllers\Api\PlayerController');
+Route::apiResource('/quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
+Route::apiResource('/players', 'App\Http\Controllers\Api\PlayerController');
 
 Route::get('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'getActiveQuestionGroup']);
 Route::post('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'setActiveQuestionGroup']);
 
-Route::post('answers/set-selected-answer', [AnswerController::class, 'setSelectedAnswer']);
-Route::post('answers/set-open-answer', [AnswerController::class, 'setOpenAnswer']);
+Route::post('/answers/set-selected-answer', [AnswerController::class, 'setSelectedAnswer']);
+Route::post('/answers/set-open-answer', [AnswerController::class, 'setOpenAnswer']);
 
 Route::post('/players/{player}/deactivate', [PlayerController::class, 'setPlayerInactive']);
 
-Route::post('quiz-instances/{quiz_instance}/poll', [QuizInstanceController::class, 'handleQuestionGroupPoll']);
-Route::get('quiz-instances/{quiz_instance}/poll-group', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);
+Route::post('/quiz-instances/{quiz_instance}/poll', [QuizInstanceController::class, 'handleQuestionGroupPoll']);
+Route::get('/quiz-instances/{quiz_instance}/poll-group', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);
