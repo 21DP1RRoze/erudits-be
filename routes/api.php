@@ -75,4 +75,4 @@ Route::post('/answers/set-open-answer', [AnswerController::class, 'setOpenAnswer
 Route::post('/players/{player}/deactivate', [PlayerController::class, 'setPlayerInactive']);
 
 Route::post('/quiz-instances/{quiz_instance}/poll', [QuizInstanceController::class, 'handleQuestionGroupPoll']);
-Route::get('/quiz-instances/{quiz_instance}/poll-group', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);
+Route::get('/quiz-instances/{quiz_instance}/poll-group/{player}', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);

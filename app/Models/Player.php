@@ -15,6 +15,7 @@ class Player extends Model
         'name',
         'points',
         'is_disqualified',
+        'is_tiebreaking',
         'quiz_instance_id',
     ];
 

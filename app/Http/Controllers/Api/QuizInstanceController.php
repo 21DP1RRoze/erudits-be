@@ -165,9 +165,8 @@ class QuizInstanceController extends Controller
         }
     }
 
-    public function hasActiveQuestionGroupPoll(QuizInstance $quizInstance)
+    public function hasActiveQuestionGroupPoll(QuizInstance $quizInstance, Player $player)
     {
-
         if($quizInstance->active_question_group_id == null) {
             return response()->json([
                 'status' => false,
@@ -176,6 +175,9 @@ class QuizInstanceController extends Controller
 
         return response()->json([
             'data' => new QuizInstanceResource($quizInstance),
+            'is_disqualified' => $player->is_disqualified,
+            'is_tiebreaking' => $player->is_tiebreaking,
+            'active_question_group_ended' => $this->hasQuestionGroupEnded($quizInstance),
         ]);
     }
 
