@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlayerAnswer extends Model
 {
     use HasFactory;
-    protected $fillable = ['player_id', 'question_id', 'answer_id'];
+    protected $fillable = ['player_id', 'question_id', 'answer_id', 'questioned_at', 'answered_at'];
 
     public function player()
     {

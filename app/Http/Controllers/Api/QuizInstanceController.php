@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\PlayerResource;
+use App\Http\Resources\QuestionResource;
 use App\Models\Player;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -130,6 +131,18 @@ class QuizInstanceController extends Controller
         ]);
     }
 
+    public function setActiveTiebreakerQuestionGroup(QuizInstance $quizInstance)
+    {
+        $questionGroup = $quizInstance->quiz->questionGroups()->where('is_additional', true)->first();
+        $quizInstance->update([
+            'active_question_group_id' => $questionGroup->id,
+            'active_question_group_start' => now(),
+        ]);
+        return response()->json([
+            'data' => new QuizInstanceResource($quizInstance),
+        ]);
+    }
+
     public function setQuizInstanceActive(QuizInstance $quizInstance)
     {
         $quizInstance->update(['is_active' => true]);
@@ -204,5 +217,45 @@ class QuizInstanceController extends Controller
             return true;
         }
         return false;
+    }
+
+    public function compareTiebreakerAnswers(QuizInstance $quizInstance)
+    {
+        $players = $quizInstance->players()->where('is_tiebreaking', true)->get();
+        $winningPlayer = null;
+        $winningAnswer = null;
+        $winningTime = null;
+        foreach ($players as $player) {
+            $playerAnswer = $player->player_answers()->where('question_id', $quizInstance->active_question_group_id)->first();
+            if ($winningAnswer == null) {
+                $winningPlayer = $player;
+                $winningAnswer = $playerAnswer->answer_id;
+                $winningTime = $playerAnswer->answered_at;
+            } else {
+                if ($playerAnswer->answer_id > $winningAnswer) {
+                    $winningPlayer = $player;
+                    $winningAnswer = $playerAnswer->answer_id;
+                    $winningTime = $playerAnswer->answered_at;
+                } else if ($playerAnswer->answer_id == $winningAnswer) {
+                    if ($playerAnswer->answered_at < $winningTime) {
+                        $winningPlayer = $player;
+                        $winningAnswer = $playerAnswer->answer_id;
+                        $winningTime = $playerAnswer->answered_at;
+                    }
+                }
+            }
+        }
+        return response()->json([
+            'winning_player' => new PlayerResource($winningPlayer),
+            'winning_answer' => $winningAnswer,
+            'winning_time' => $winningTime,
+        ]);
+    }
+
+    public function getRandomTiebreakerQuestion(QuizInstance $quizInstance)
+    {
+        $questionGroup = $quizInstance->quiz->questionGroups()->where('is_additional', true)->first();
+        $question = $questionGroup->questions()->inRandomOrder()->first();
+        return new QuestionResource($question);
     }
 }

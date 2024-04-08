@@ -14,6 +14,7 @@ class Player extends Model
     protected $fillable = [
         'name',
         'points',
+        'tiebreaker_points',
         'is_disqualified',
         'is_tiebreaking',
         'quiz_instance_id',

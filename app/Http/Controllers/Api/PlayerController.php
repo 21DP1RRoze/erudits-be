@@ -18,6 +18,7 @@ class PlayerController extends Controller
     public function index()
     {
         $this->calculatePoints();
+        $this->calculateTiebreakPoints();
         return PlayerResource::collection(Player::all());
     }
 
@@ -70,13 +71,31 @@ class PlayerController extends Controller
 
     public function calculatePoints()
     {
-        // Calculate points for each player, add score to player if answer is correct
         $players = Player::all();
         foreach ($players as $player) {
             $player->points = 0;
             foreach ($player->player_answers as $playerAnswer) {
-                if ($playerAnswer->answer->is_correct) {
-                    $player->points += $playerAnswer->question->question_group->points;
+                if ($playerAnswer->question->question_group->is_additional) continue;
+                if (!$playerAnswer->question->question_group->is_additional) {
+                    if ($playerAnswer->answer->is_correct) {
+                        $player->points += $playerAnswer->question->question_group->points;
+                    }
+                }
+            }
+            $player->save();
+        }
+    }
+
+    public function calculateTiebreakPoints()
+    {
+        $players = Player::all();
+        foreach ($players as $player) {
+            $player->tiebreak_points = 0;
+            foreach ($player->player_answers as $playerAnswer) {
+                if ($playerAnswer->question->question_group->is_additional) {
+                    if ($playerAnswer->answer->is_correct) {
+                        $player->tiebreak_points += $playerAnswer->question->question_group->points;
+                    }
                 }
             }
             $player->save();
@@ -97,6 +116,21 @@ class PlayerController extends Controller
     public function requalifyPlayer(Player $player)
     {
         $player->update(['is_disqualified' => false]);
+    }
+
+    public function tiebreakSelectedPlayers(Request $request)
+    {
+        $validated = $request->validate([
+            'player_ids' => 'required|array',
+        ]);
+
+        foreach ($validated['player_ids'] as $player_id) {
+            $player = Player::find($player_id);
+            $player->is_tiebreaking = true;
+            $player->save();
+        }
+
+        return response()->json();
     }
 
     public function disqualifySelectedPlayers(Request $request)

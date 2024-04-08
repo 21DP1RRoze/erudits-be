@@ -50,6 +50,7 @@ Route::group([
         Route::get('/active-public', [QuizInstanceController::class, 'getActivePublicQuizzes']);
 
         Route::get('/{quiz_instance}/players', [QuizInstanceController::class, 'getQuizInstancePlayers']);
+        Route::get('/{quiz_instance}/compare-tiebreakers', [QuizInstanceController::class, 'compareTiebreakerAnswers']);
     });
     Route::apiResource('/question-groups', 'App\Http\Controllers\Api\QuestionGroupController');
     Route::apiResource('/questions', 'App\Http\Controllers\Api\QuestionController');
@@ -62,17 +63,21 @@ Route::group([
     Route::post('/players/{player}/disqualify', [PlayerController::class, 'disqualifyPlayer']);
     Route::post('/players/{player}/requalify', [PlayerController::class, 'requalifyPlayer']);
     Route::post('/players/disqualify-selected', [PlayerController::class, 'disqualifySelectedPlayers']);
+    Route::post('/players/tiebreak-selected', [PlayerController::class, 'tiebreakSelectedPlayers']);
 });
 Route::apiResource('/quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
 Route::apiResource('/players', 'App\Http\Controllers\Api\PlayerController');
 
 Route::get('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'getActiveQuestionGroup']);
 Route::post('/quiz-instances/{quiz_instance}/active-question-group', [QuizInstanceController::class, 'setActiveQuestionGroup']);
+Route::post('/quiz-instances/{quiz_instance}/active-tiebreaker-question-group', [QuizInstanceController::class, 'setActiveTiebreakerQuestionGroup']);
 
 Route::post('/answers/set-selected-answer', [AnswerController::class, 'setSelectedAnswer']);
 Route::post('/answers/set-open-answer', [AnswerController::class, 'setOpenAnswer']);
+Route::post('/answers/set-tiebreaker-answer', [AnswerController::class, 'setTiebreakerAnswer']);
 
 Route::post('/players/{player}/deactivate', [PlayerController::class, 'setPlayerInactive']);
 
 Route::post('/quiz-instances/{quiz_instance}/poll', [QuizInstanceController::class, 'handleQuestionGroupPoll']);
 Route::get('/quiz-instances/{quiz_instance}/poll-group/{player}', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);
+Route::get('/quiz-instances/{quiz_instance}/get-random-tiebreaker-question', [QuizInstanceController::class, 'getRandomTiebreakerQuestion']);
