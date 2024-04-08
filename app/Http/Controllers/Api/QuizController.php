@@ -96,6 +96,7 @@ class QuizController extends Controller
                         'text' => $questionData['text'],
                         'is_open_answer' => $questionData['is_open_answer'],
                         'guidelines' => $questionData['guidelines'],
+                        'image' => $questionData['image'],
                         // Add other question fields here
                     ]
                 );
