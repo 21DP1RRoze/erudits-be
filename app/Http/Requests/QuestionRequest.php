@@ -32,6 +32,7 @@ class QuestionRequest extends FormRequest
             'image' => 'nullable',
             'is_open_answer' => 'boolean',
             'guidelines' => 'text',
+            'correct_answer' => 'text',
             'question_group_id' => 'required|exists:question_groups,id',
         ];
     }
