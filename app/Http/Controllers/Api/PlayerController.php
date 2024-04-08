@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PlayerRequest;
 use App\Http\Resources\PlayerResource;
 use App\Models\Player;
+use function Psy\debug;
 
 
 class PlayerController extends Controller
@@ -18,7 +19,6 @@ class PlayerController extends Controller
     public function index()
     {
         $this->calculatePoints();
-        $this->calculateTiebreakPoints();
         return PlayerResource::collection(Player::all());
     }
 
@@ -72,32 +72,26 @@ class PlayerController extends Controller
     public function calculatePoints()
     {
         $players = Player::all();
+
         foreach ($players as $player) {
             $player->points = 0;
-            foreach ($player->player_answers as $playerAnswer) {
-                if ($playerAnswer->question->question_group->is_additional) continue;
-                if (!$playerAnswer->question->question_group->is_additional) {
-                    if ($playerAnswer->answer->is_correct) {
-                        $player->points += $playerAnswer->question->question_group->points;
-                    }
-                }
-            }
-            $player->save();
-        }
-    }
-
-    public function calculateTiebreakPoints()
-    {
-        $players = Player::all();
-        foreach ($players as $player) {
             $player->tiebreak_points = 0;
+
             foreach ($player->player_answers as $playerAnswer) {
-                if ($playerAnswer->question->question_group->is_additional) {
+                $questionGroup = $playerAnswer->question->question_group;
+                $pointsToAdd = $questionGroup->points;
+
+                if ($questionGroup->is_additional) {
                     if ($playerAnswer->answer->is_correct) {
-                        $player->tiebreak_points += $playerAnswer->question->question_group->points;
+                        $player->tiebreak_points += $pointsToAdd;
+                    }
+                } else {
+                    if ($playerAnswer->answer->is_correct) {
+                        $player->points += $pointsToAdd;
                     }
                 }
             }
+
             $player->save();
         }
     }
