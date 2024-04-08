@@ -12,7 +12,6 @@ class OpenAnswer extends Model
 
     protected $fillable = [
         'answer',
-        'example_answer',
         'points',
         'question_id',
         'player_id',

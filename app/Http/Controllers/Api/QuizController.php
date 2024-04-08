@@ -57,12 +57,12 @@ class QuizController extends Controller
         return response()->json();
     }
 
-    public function saveTitleDescription(Request $request, Quiz $quiz) {        
+    public function saveTitleDescription(Request $request, Quiz $quiz) {
         $validated = $request->validate([
             'title' => 'required',
             'description' => 'max:512|nullable',
         ]);
-        
+
         $quiz->update($validated);
     }
 
@@ -96,6 +96,7 @@ class QuizController extends Controller
                         'text' => $questionData['text'],
                         'is_open_answer' => $questionData['is_open_answer'],
                         'guidelines' => $questionData['guidelines'],
+                        'correct_answer' => $questionData['correct_answer'],
                         'image' => $questionData['image'],
                         // Add other question fields here
                     ]
