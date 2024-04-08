@@ -18,6 +18,7 @@ class PlayerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'points' => $this->points,
+            'tiebreaker_points' => $this->tiebreaker_points,
             'is_disqualified' => $this->is_disqualified,
             'player_answers' => PlayerAnswerResource::collection($this->player_answers),
             'open_answers' => OpenAnswerResource::collection($this->open_answers),

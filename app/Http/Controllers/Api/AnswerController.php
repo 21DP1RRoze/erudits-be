@@ -73,9 +73,7 @@ class AnswerController extends Controller
         } else {
             $updatedPlayerAnswer = PlayerAnswer::create($validated);
         }
-        return response()->json([
-            'player_answer' => $updatedPlayerAnswer,
-        ]);
+        return response()->json();
     }
 
     public function setOpenAnswer(Request $request)
@@ -94,6 +92,29 @@ class AnswerController extends Controller
         } else {
             OpenAnswer::create($validated);
         }
+        return response()->json();
+    }
+
+    public function setTiebreakerAnswer(Request $request)
+    {
+        $validated = $request->validate([
+            'player_id' => 'required|integer',
+            'question_id' => 'required|integer',
+            'answer_id' => 'required|integer',
+            'questioned_at' => 'required|date',
+            'answered_at' => 'required|date',
+        ]);
+
+        $playerAnswer = PlayerAnswer::where('player_id', $validated['player_id'])
+            ->where('question_id', $validated['question_id'])
+            ->first();
+
+        if ($playerAnswer) {
+            $playerAnswer->update($validated);
+        } else {
+            PlayerAnswer::create($validated);
+        }
+
         return response()->json();
     }
 }
