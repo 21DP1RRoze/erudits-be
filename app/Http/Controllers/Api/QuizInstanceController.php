@@ -110,6 +110,11 @@ class QuizInstanceController extends Controller
                 }
             }
 
+            foreach ($player->open_answers as $openAnswer) {
+                $pointsToAdd = $openAnswer->points;
+                $player->points += $pointsToAdd;
+            }
+
             $player->save();
         }
     }
@@ -273,5 +278,23 @@ class QuizInstanceController extends Controller
         $questionGroup = $quizInstance->quiz->questionGroups()->where('is_additional', true)->first();
         $question = $questionGroup->questions()->inRandomOrder()->first();
         return new QuestionResource($question);
+    }
+
+    public function pollQuizInstanceOpenAnswers(QuizInstance $quizInstance)
+    {
+        $allOpenAnswers = [];
+
+        // Assuming $quizInstance->players returns an array or collection of Player objects
+        foreach ($quizInstance->players as $player) {
+            // Assuming each player has an 'openAnswers' property or method that returns their open answers
+            // Adjust the method of access according to your actual data structure
+            $playerOpenAnswers = $player->open_answers; // This could be a method call or property
+
+            // If openAnswers is a method that returns a collection or array of answers, directly merge
+            // If it's a more complex structure, you might need to transform it before merging
+            $allOpenAnswers = array_merge($allOpenAnswers, $playerOpenAnswers);
+        }
+
+        return $allOpenAnswers;
     }
 }
