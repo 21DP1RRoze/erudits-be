@@ -64,6 +64,7 @@ Route::group([
     Route::post('/players/{player}/requalify', [PlayerController::class, 'requalifyPlayer']);
     Route::post('/players/disqualify-selected', [PlayerController::class, 'disqualifySelectedPlayers']);
     Route::post('/players/tiebreak-selected', [PlayerController::class, 'tiebreakSelectedPlayers']);
+    Route::post('/open-answers/{open_answer}/points', [AnswerController::class, 'setOpenAnswerPoints']);
 });
 Route::apiResource('/quiz-instances', 'App\Http\Controllers\Api\QuizInstanceController');
 Route::apiResource('/players', 'App\Http\Controllers\Api\PlayerController');

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('open_answers', function (Blueprint $table) {
             $table->id();
             $table->text('answer');
+            $table->text('example_answer')->nullable();
+            $table->integer('points')->default(0);
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
             $table->foreignId('player_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

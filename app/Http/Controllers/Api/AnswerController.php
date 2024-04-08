@@ -117,4 +117,13 @@ class AnswerController extends Controller
 
         return response()->json();
     }
+
+    public function setOpenAnswerPoints(OpenAnswer $openAnswer, Request $request)
+    {
+        $validated = $request->validate([
+            'points' => 'required|integer',
+        ]);
+        $openAnswer->update(['points' => $openAnswer['points']]);
+        return response()->json();
+    }
 }
