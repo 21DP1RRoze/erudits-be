@@ -82,3 +82,4 @@ Route::post('/players/{player}/deactivate', [PlayerController::class, 'setPlayer
 Route::post('/quiz-instances/{quiz_instance}/poll', [QuizInstanceController::class, 'handleQuestionGroupPoll']);
 Route::get('/quiz-instances/{quiz_instance}/poll-group/{player}', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);
 Route::get('/quiz-instances/{quiz_instance}/get-random-tiebreaker-question', [QuizInstanceController::class, 'getRandomTiebreakerQuestion']);
+Route::get('/quiz-instances/{quiz_instance}/poll/open-answers', [QuizInstanceController::class, 'pollQuizInstanceOpenAnswers']);
