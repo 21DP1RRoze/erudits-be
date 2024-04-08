@@ -87,17 +87,29 @@ class QuizInstanceController extends Controller
         return PlayerResource::collection($quizInstance->players()->get());
     }
 
-    public function calculatePoints($quizInstance)
+    public function calculatePoints()
     {
-        // Calculate points for each player in current quiz instance
-        $players = $quizInstance->players()->get();
+        $players = Player::all();
+
         foreach ($players as $player) {
             $player->points = 0;
+            $player->tiebreaker_points = 0;
+
             foreach ($player->player_answers as $playerAnswer) {
-                if ($playerAnswer->answer->is_correct) {
-                    $player->points += $playerAnswer->question->question_group->points;
+                $questionGroup = $playerAnswer->question->question_group;
+                $pointsToAdd = $questionGroup->points;
+
+                if ($questionGroup->is_additional) {
+                    if ($playerAnswer->answer->is_correct) {
+                        $player->tiebreaker_points += $pointsToAdd;
+                    }
+                } else {
+                    if ($playerAnswer->answer->is_correct) {
+                        $player->points += $pointsToAdd;
+                    }
                 }
             }
+
             $player->save();
         }
     }
@@ -227,6 +239,10 @@ class QuizInstanceController extends Controller
         $winningTime = null;
         foreach ($players as $player) {
             $playerAnswer = $player->player_answers()->where('question_id', $quizInstance->active_question_group_id)->first();
+            // If no answer has been given, skip the player
+            if ($playerAnswer == null) {
+                continue;
+            }
             if ($winningAnswer == null) {
                 $winningPlayer = $player;
                 $winningAnswer = $playerAnswer->answer_id;
