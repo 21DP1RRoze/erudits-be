@@ -83,3 +83,5 @@ Route::post('/quiz-instances/{quiz_instance}/poll', [QuizInstanceController::cla
 Route::get('/quiz-instances/{quiz_instance}/poll-group/{player}', [QuizInstanceController::class, 'hasActiveQuestionGroupPoll']);
 Route::get('/quiz-instances/{quiz_instance}/get-random-tiebreaker-question', [QuizInstanceController::class, 'getRandomTiebreakerQuestion']);
 Route::get('/quiz-instances/{quiz_instance}/poll/open-answers', [QuizInstanceController::class, 'pollQuizInstanceOpenAnswers']);
+Route::post('/quiz-instances/{quiz_instance}/clear-tiebreaker-data', [QuizInstanceController::class, 'clearTiebreakerData']);
+
