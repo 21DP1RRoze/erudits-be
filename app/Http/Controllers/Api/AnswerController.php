@@ -123,7 +123,7 @@ class AnswerController extends Controller
         $validated = $request->validate([
             'points' => 'required|integer',
         ]);
-        $openAnswer->update(['points' => $openAnswer['points']]);
+        $openAnswer->update(['points' => $validated['points']]);
         return response()->json();
     }
 }
