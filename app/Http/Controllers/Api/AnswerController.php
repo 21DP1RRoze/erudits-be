@@ -81,7 +81,7 @@ class AnswerController extends Controller
         $validated = $request->validate([
             'player_id' => 'required|integer',
             'question_id' => 'required|integer',
-            'answer' => 'required|string',
+            'answer' => 'max:255',
         ]);
 
         $openAnswer = OpenAnswer::where('player_id', $validated['player_id'])
