@@ -87,9 +87,9 @@ class QuizInstanceController extends Controller
         return PlayerResource::collection($quizInstance->players()->get());
     }
 
-    public function calculatePoints()
+    public function calculatePoints(QuizInstance $quizInstance)
     {
-        $players = Player::all();
+        $players = $quizInstance->players()->get();
 
         foreach ($players as $player) {
             $player->points = 0;
@@ -296,5 +296,28 @@ class QuizInstanceController extends Controller
         }
 
         return $allOpenAnswers;
+    }
+
+    public function clearAllTiebreakerData(QuizInstance $quizInstance)
+    {
+
+        // Delete all tiebreaker answers
+        $players = $quizInstance->players;
+        foreach ($players as $player) {
+            // Clear all player answers where question group of question is additional
+            $player->player_answers()->whereHas('question', function ($query) {
+                $query->whereHas('question_group', function ($query) {
+                    $query->where('is_additional', true);
+                });
+            })->delete();
+        }
+
+        // Clear active question group
+        $quizInstance->update([
+            'active_question_group_id' => null,
+            'active_question_group_start' => null,
+        ]);
+
+        return response()->json();
     }
 }
