@@ -304,6 +304,8 @@ class QuizInstanceController extends Controller
         // Delete all tiebreaker answers
         $players = $quizInstance->players;
         foreach ($players as $player) {
+            $player->is_tiebreaking = false;
+            $player->save();
             // Clear all player answers where question group of question is additional
             $player->player_answers()->whereHas('question', function ($query) {
                 $query->whereHas('question_group', function ($query) {

@@ -19,7 +19,7 @@ class QuizInstanceResource extends JsonResource
             'is_public'=>$this->is_public,
             'is_active'=>$this->is_active,
             'active_question_group'=> new QuestionGroupResource($this->activeQuestionGroup),
-            'quiz' => new QuizResource($this->quiz),
+            'quiz' => new QuizResource($this->quiz), // For admin
             'active_question_group_start' => $this->active_question_group_start,
             'has_question_group_ended' => $this->hasQuestionGroupEnded($this),
         ];
